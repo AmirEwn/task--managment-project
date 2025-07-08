@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="/src/output.css">
+</head>
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #374151 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+</style>
+
+<body class="bg-gray-900 text-white h-full">
+    <!-- Hero Section -->
+    <section class="relative w-full h-full bg-gray-900 overflow-hidden flex justify-center items-center">
+        <!-- Background overlay -->
+        <div class="absolute inset-0 bg-black bg-opacity-60 z-10"></div>
+
+        <!-- Background image -->
+        <img src="img/hero.jpg" alt="Background" class="absolute inset-0 w-full h-full object-cover z-0" />
+
+        <!-- Content -->
+        <div class="w-full max-w-2xl bg-gray-800 rounded-lg shadow-lg p-8 space-y-6 relative z-20 ">
+            <h2 class="text-2xl font-bold text-center">ثبت نام</h2>
+
+            <form class="space-y-4" id="form">
+                <!-- first name -->
+                <div class="flex justify-between items-start gap-6  ">
+                    <div class="w-1/2">
+                        <label for="firstName" class="block text-sm font-medium text-right pr-5"> نام و نام خانوادگی</label>
+                        <input type="text" id="firstName" name="firstName" required
+                            class="text-right mt-3 w-full px-4 py-2 border border-gray-600 bg-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <!-- یوزرنیم -->
+                    <div class="w-1/2 flex justify-end">
+                        <div class="w-full max-w-xs">
+                            <label for="username" class="block text-sm font-medium text-right pr-5">نام کاربری </label>
+                            <input type="text" id="username" name="username" required
+                                class="text-right mt-3 w-full px-4 py-2 border border-gray-600 bg-gray-700 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-right pr-5">آدرس ایمیل</label>
+                    <input type="email" id="email" name="email" required
+                        class="mt-3 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="you@example.com" />
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-right pr-5">رمز عبور</label>
+                    <input type="password" id="password" name="password" required
+                        class="mt-3 w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        placeholder="••••••••" />
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-center items-center">
+
+                    <button type="submit" id="register_button"
+                        class="mt-2 w-40 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-md transition">
+                        ثبت نام
+                    </button>
+                    <a href="home.html" class="w-40 flex justify-end px-16"> برگشت</a>
+                </div>
+
+
+            </form>
+        </div>
+
+    </section>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+
+
+
+        // const api = "http://localhost:8000/api";
+
+        // const username = document.getElementById("email");
+        // const password = document.getElementById("password");
+        // const name = document.getElementById("firstName");
+        // const lastName = document.getElementById("lastName");
+
+        // username.addEventListener('change', function () {
+        //     console.log('مقدار فعلی اینپوت:', username.value);
+        // });
+        // password.addEventListener('change', function () {
+        //     console.log('مقدار فعلی اینپوت:', password.value);
+        // });
+        // name.addEventListener('change', function () {
+        //     console.log('مقدار فعلی اینپوت:', name.value);
+        // });
+        // lastName.addEventListener('change', function () {
+        //     console.log('مقدار فعلی اینپوت:', lastName.value);
+        // });
+
+
+        // از اینجا
+        document.getElementById('form').addEventListener('submit', function (e) {
+            e.preventDefault(); 
+        });
+
+        async function register() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const name = document.getElementById("firstName").value;
+            const username = document.getElementById("username").value;
+
+
+            // const res = await fetch(`http://localhost:8000/api/auth/register`, {
+            //     method: "POST",
+            //     headers: { "Content-Type": "application/json" },
+            //     body: JSON.stringify({ username, password , name , lastName }),
+            // });
+
+            // if (res.ok) {
+            //     alert(" ثبت‌ نام موفق. حالا وارد شو");
+            //     window.location.href = "login.html";
+            // } else {
+            //     alert(" خطا در ثبت‌ نام");
+            // }
+
+
+            fetch('http://localhost:8000/auth/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username,
+                    password,
+                    
+                    email
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("ثبت‌ نام موفق. حالا وارد شو");
+                    window.location.href = "login.html";
+                })
+                .catch(error => {
+                    console.error('Error registering user:', error);
+                    alert("خطا در ثب ت‌نام");
+                });
+        }
+
+        const register_button = document.getElementById("register_button");
+
+        register_button.addEventListener("click", function () {
+            register();
+        });
+
+    </script>
+
+</body>
+
+</html>
