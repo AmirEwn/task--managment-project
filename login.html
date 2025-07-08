@@ -48,7 +48,7 @@
                         placeholder="••••••••" />
                 </div>
 
-                <div id="message" style="color: green;"></div>
+                
 
                 <!-- Submit Button -->
                 <div class="flex justify-center items-center gap-5">
@@ -64,6 +64,8 @@
 
                     <a href="#" class="text-indigo-400 hover:text-indigo-500">رمزتان را فرموش کرده اید ؟</a>
                 </div>
+
+                <div id="message" class="text-center"></div>
             </form>
         </div>
 
@@ -89,29 +91,30 @@
                     body: JSON.stringify({ username, password })
                 });
 
-                const data = await response.json();
+                const data = await response.json(); //پاسخ سرور
 
                 if (response.ok) {
-                    
+
                     localStorage.setItem('access_token', data.access);
                     localStorage.setItem('refresh_token', data.refresh);
 
-                    messageBox.textContent = "ورود با موفقیت انجام شد ✅";
+                    messageBox.style.color = "green";
+                    messageBox.textContent = "ورود با موفقیت انجام شد ";
 
-                    
+
                     setTimeout(() => {
-                        window.location.href = "/profile.html";  
+                        window.location.href = "/profile.html";
                     }, 1000);
 
                 } else {
                     messageBox.style.color = "red";
-                    messageBox.textContent = data.detail || "نام کاربری یا رمز اشتباه است ❌";
+                    messageBox.textContent = data.detail || "نام کاربری یا رمز اشتباه است ";
                 }
 
             } catch (error) {
                 console.error('Login error:', error);
                 messageBox.style.color = "red";
-                messageBox.textContent = "مشکلی در ارتباط با سرور به وجود آمده ❗";
+                messageBox.textContent = "مشکلی در ارتباط با سرور به وجود آمده ";
             }
         });
 
