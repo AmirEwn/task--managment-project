@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="size-full" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Member</title>
+    <link rel="stylesheet" href="src/output.css">
+</head>
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px var(--color-gray-800) oklch(27.8% 0.033 256.848)=#1e2939 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+</style>
+
+<body class="size-full">
+    <section class="bg-gray-900 text-white w-full h-screen justify-center flex items-center">
+        <div class="bg-gray-800 size-3/4 rounded-lg ">
+            <div class="grid grid-cols-3 gap-2 p-5 size-full text-white border rounded-2xl overflow-x-hidden">
+                <form id="form" class="col-span-3 grid grid-cols-2 gap-6 p-6 size-full">
+                    <h1 class="text-2xl font-bold text-center mb-2 col-span-2">ایجاد پروژه جدید</h1>
+
+
+
+
+
+                    <!-- بخش سمت راست (عنوان و اعضا) -->
+                    <div class="grid size-full">
+
+
+                        <!-- انتخاب اعضای تیم -->
+                        <div class="space-y-2">
+                            <label class=" text-sm font-medium grid ">نام کاربری را وارد کنید</label>
+                            <div class=" bg-gray-700 border border-gray-600 rounded-md p-4  overflow-y-auto">
+                                <!-- لیست کاربران موجود -->
+                                <div id="members" class="space-y-3">
+                                    <div class="flex items-center">
+                                        <label for="user" class="ml-2 text-sm"></label>
+                                        <input id="user" name="team-members" type="text"
+                                            class="h-10 w-full px-3 text-white rounded bg-gray-800 border-gray-600 focus:ring-blue-500">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <!-- بخش سمت چپ (توضیحات) -->
+                    <div class="grid  justify-center size-full">
+
+
+                        <div class="pt-4 flex flex-col size-full">
+                            <p>
+                                لطفا اعضایی که نیاز دارید برای پروژه مورد نظر را انتخاب کنید .
+                            </p>
+                            <br>
+                            <p>
+
+                            </p>
+                        </div>
+
+                        <!-- دکمه ارسال -->
+                        <div class=" pt-4 flex flex-col  h-full">
+                            <div>
+                                <button id="button" type="submit" id="button"
+                                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200">
+                                    اضافه کردن
+                                </button>
+                            </div>
+                            <div class="mt-5">
+                                <a href="profile.html" class="w-full flex justify-center px-16"> برگشت</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // گرفتن project_id از URL
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+
+
+        document.getElementById("button").addEventListener("click", async function (e) {
+            e.preventDefault();
+            const confirmDelete = window.confirm("آیا مطمئن هستید که می‌خواهید این کاربر را اضافه کنید؟");
+            if (!confirmDelete) {
+                return;
+            }
+
+            const username = document.querySelector("#user").value;
+            try {
+
+                const response = await fetch(`http://localhost:8000/api/projects/${projectId}/add-member/`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ` + sessionStorage.getItem('access_token'),
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username })
+                })
+
+                if (response.status === 200) {
+                    alert("کاربر با موفقیت اضافه شد .");
+                    setTimeout(() => {
+                        window.location.href = `viewproject.html?id=${projectId}`;
+                    }, 1000);
+                } else if (response.status === 403) {
+                    throw new Error("شما سازنده ی این پروژه نیستید .");
+                } else if (response.status === 404) {
+                    throw new Error("کاربر یا پروژه پیدا نشد .");
+                } else {
+                    const data = await response.json();
+                    throw new Error(data.detail || "خطای ناشناخته ای رخ داد.");
+                }
+            } catch (error) {
+                console.error("خطا در اضافه کردن پروژه : ", error.message);
+                alert(error.message);
+            }
+
+        })
+
+        const token = sessionStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
+</html>
