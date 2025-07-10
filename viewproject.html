@@ -7,35 +7,62 @@
     <title>Project Details</title>
     <link rel="stylesheet" href="src/output.css">
 </head>
-
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #374151 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+</style>
 <body class="size-full">
     <section class="bg-gray-900 text-white w-full min-h-screen justify-center flex items-center p-8">
         <div class="bg-gray-800 rounded-lg size-3/4 border overflow-x-hidden p-6">
             <!-- هدر پروژه -->
             <div class="flex justify-between items-start mb-8">
                 <div>
-                    <h1 class="text-3xl font-bold">پروژه: سیستم مدیریت وظایف</h1>
-                    <p class="text-gray-300 mt-2">این پروژه برای مدیریت تسک‌های تیمی طراحی شده است</p>
+                    <h1 id="name" class="text-3xl font-bold">پروژه: سیستم مدیریت وظایف</h1>
+                    <p id="description" class="text-gray-300 mt-4">این پروژه برای مدیریت تسک‌های تیمی طراحی شده است</p>
+                    <p id="owner" class="text-gray-300 mt-2">این پروژه برای مدیریت تسک‌های تیمی طراحی شده است</p>
                 </div>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center">
-                    <span>+ تسک جدید</span>
-                </button>
+                <div>
+                    <button
+                        class="newTask bg-blue-600 w-40 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center text-center justify-center">
+                        <a href=""> تسک جدید + </a>
+                    </button>
+                    <button
+                        class="member bg-green-600 w-40 mt-2 hover:bg-green-700 text-white px-4 py-2 rounded-md flex items-center text-center justify-center">
+                        <a href="">افزودن اعضا </a>
+                    </button>
+                    <button
+                        class="update bg-yellow-500 hover:bg-yellow-600 w-40 text-white px-4 py-2 mt-2 rounded-md  flex items-center text-center justify-center">
+                        <a href=""> ویرایش </a>
+                    </button>
+                    <button
+                        class="delete bg-red-600 w-40 hover:bg-red-700 text-white px-4 py-2 mt-2 rounded-md flex items-center text-center justify-center">
+                        <a href=""> حذف </a>
+                    </button>
+                    <a href="profile.html" class="w-40 flex justify-end mt-2 px-16 border rounded-md"> برگشت</a>
+                </div>
             </div>
+
 
             <!-- اعضای تیم -->
             <div class="mb-8">
                 <h2 class="text-xl font-semibold mb-4">اعضای تیم</h2>
-                <div class="flex flex-wrap gap-3">
+                <div id="members" class="flex  flex-wrap gap-3">
                     <div class="bg-gray-700 px-4 py-2 rounded-full flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-blue-500 mr-2 flex items-center justify-center">ع</div>
+                        <div class="w-8 h-8 rounded-full bg-blue-500 mr-2 flex items-center justify-center"></div>
                         <span>علی محمدی</span>
                     </div>
                     <div class="bg-gray-700 px-4 py-2 rounded-full flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-green-500 mr-2 flex items-center justify-center">ز</div>
+                        <div class="w-8 h-8 rounded-full bg-green-500 mr-2 flex items-center justify-center"></div>
                         <span>زهرا احمدی</span>
                     </div>
                     <div class="bg-gray-700 px-4 py-2 rounded-full flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-purple-500 mr-2 flex items-center justify-center">م</div>
+                        <div class="w-8 h-8 rounded-full bg-purple-500 mr-2 flex items-center justify-center"></div>
                         <span>محمد رضایی</span>
                     </div>
                 </div>
@@ -44,7 +71,7 @@
             <!-- تسک‌ها -->
             <div>
                 <h2 class="text-xl font-semibold mb-4">تسک‌ها</h2>
-                
+
                 <!-- حالت جدول (برای دسکتاپ) -->
                 <div class="hidden md:block">
                     <table class="w-full border-collapse">
@@ -62,78 +89,102 @@
                             <tr class="border-b border-gray-700 hover:bg-gray-700/50">
                                 <td class="p-3">طراحی رابط کاربری</td>
                                 <td class="p-3">
-                                    <span class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded-full text-sm">در حال بررسی</span>
+                                    <span class="bg-yellow-500/20 text-yellow-500 px-3 py-1 rounded-full text-sm">در حال
+                                        بررسی</span>
                                 </td>
                                 <td class="p-3">
                                     <div class="flex items-center">
-                                        <div class="w-6 h-6 rounded-full bg-blue-500 mr-2 flex items-center justify-center text-xs">ع</div>
+                                        <div
+                                            class="w-6 h-6 rounded-full bg-blue-500 mr-2 flex items-center justify-center text-xs">
+                                            ع</div>
                                         <span>علی محمدی</span>
                                     </div>
                                 </td>
                                 <td class="p-3">1402/05/15</td>
                                 <td class="p-3">
                                     <button class="text-blue-400 hover:text-blue-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path
+                                                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
                                     </button>
                                     <button class="text-red-400 hover:text-red-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     </button>
                                 </td>
                             </tr>
-                            
+
                             <!-- تسک 2 -->
                             <tr class="border-b border-gray-700 hover:bg-gray-700/50">
                                 <td class="p-3">پیاده سازی بک‌اند</td>
                                 <td class="p-3">
-                                    <span class="bg-blue-500/20 text-blue-500 px-3 py-1 rounded-full text-sm">در حال انجام</span>
+                                    <span class="bg-blue-500/20 text-blue-500 px-3 py-1 rounded-full text-sm">در حال
+                                        انجام</span>
                                 </td>
                                 <td class="p-3">
                                     <div class="flex items-center">
-                                        <div class="w-6 h-6 rounded-full bg-green-500 mr-2 flex items-center justify-center text-xs">ز</div>
+                                        <div
+                                            class="w-6 h-6 rounded-full bg-green-500 mr-2 flex items-center justify-center text-xs">
+                                            ز</div>
                                         <span>زهرا احمدی</span>
                                     </div>
                                 </td>
                                 <td class="p-3">1402/05/20</td>
                                 <td class="p-3">
                                     <button class="text-blue-400 hover:text-blue-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path
+                                                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
                                     </button>
                                     <button class="text-red-400 hover:text-red-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     </button>
                                 </td>
                             </tr>
-                            
+
                             <!-- تسک 3 -->
                             <tr class="border-b border-gray-700 hover:bg-gray-700/50">
                                 <td class="p-3">تست سیستم</td>
                                 <td class="p-3">
-                                    <span class="bg-green-500/20 text-green-500 px-3 py-1 rounded-full text-sm">تکمیل شده</span>
+                                    <span class="bg-green-500/20 text-green-500 px-3 py-1 rounded-full text-sm">تکمیل
+                                        شده</span>
                                 </td>
                                 <td class="p-3">
                                     <div class="flex items-center">
-                                        <div class="w-6 h-6 rounded-full bg-purple-500 mr-2 flex items-center justify-center text-xs">م</div>
+                                        <div
+                                            class="w-6 h-6 rounded-full bg-purple-500 mr-2 flex items-center justify-center text-xs">
+                                            م</div>
                                         <span>محمد رضایی</span>
                                     </div>
                                 </td>
                                 <td class="p-3">1402/05/10</td>
                                 <td class="p-3">
                                     <button class="text-blue-400 hover:text-blue-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path
+                                                d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
                                     </button>
                                     <button class="text-red-400 hover:text-red-300 mx-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                clip-rule="evenodd" />
                                         </svg>
                                     </button>
                                 </td>
@@ -148,27 +199,34 @@
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
                             <h3 class="font-medium">طراحی رابط کاربری</h3>
-                            <span class="bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full text-xs">در حال انجام</span>
+                            <span class="bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded-full text-xs">در حال
+                                انجام</span>
                         </div>
                         <div class="mt-3 flex items-center text-sm">
-                            <div class="w-5 h-5 rounded-full bg-blue-500 mr-2 flex items-center justify-center text-xs">ع</div>
+                            <div class="w-5 h-5 rounded-full bg-blue-500 mr-2 flex items-center justify-center text-xs">
+                                ع</div>
                             <span>علی محمدی</span>
                         </div>
                         <div class="mt-2 text-sm text-gray-300">ددلاین: 1402/05/15</div>
                         <div class="mt-3 flex justify-end space-x-2">
                             <button class="text-blue-400 hover:text-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                 </svg>
                             </button>
                             <button class="text-red-400 hover:text-red-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- تسک 2 -->
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
@@ -176,24 +234,31 @@
                             <span class="bg-blue-500/20 text-blue-500 px-2 py-1 rounded-full text-xs">To Do</span>
                         </div>
                         <div class="mt-3 flex items-center text-sm">
-                            <div class="w-5 h-5 rounded-full bg-green-500 mr-2 flex items-center justify-center text-xs">ز</div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-green-500 mr-2 flex items-center justify-center text-xs">
+                                ز</div>
                             <span>زهرا احمدی</span>
                         </div>
                         <div class="mt-2 text-sm text-gray-300">ددلاین: 1402/05/20</div>
                         <div class="mt-3 flex justify-end space-x-2">
                             <button class="text-blue-400 hover:text-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                 </svg>
                             </button>
                             <button class="text-red-400 hover:text-red-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- تسک 3 -->
                     <div class="bg-gray-700 p-4 rounded-lg">
                         <div class="flex justify-between items-start">
@@ -201,19 +266,26 @@
                             <span class="bg-green-500/20 text-green-500 px-2 py-1 rounded-full text-xs">Done</span>
                         </div>
                         <div class="mt-3 flex items-center text-sm">
-                            <div class="w-5 h-5 rounded-full bg-purple-500 mr-2 flex items-center justify-center text-xs">م</div>
+                            <div
+                                class="w-5 h-5 rounded-full bg-purple-500 mr-2 flex items-center justify-center text-xs">
+                                م</div>
                             <span>محمد رضایی</span>
                         </div>
                         <div class="mt-2 text-sm text-gray-300">ددلاین: 1402/05/10</div>
                         <div class="mt-3 flex justify-end space-x-2">
                             <button class="text-blue-400 hover:text-blue-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                 </svg>
                             </button>
                             <button class="text-red-400 hover:text-red-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        clip-rule="evenodd" />
                                 </svg>
                             </button>
                         </div>
@@ -222,6 +294,109 @@
             </div>
         </div>
     </section>
+
+    <script>
+
+        // گرفتن project_id از URL
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+
+        //هدایت به سوی صفحه ی آپدیت پروژه
+        const update = document.querySelector(".update");
+        update.addEventListener("click", function () {
+            window.location.href = `updateproject.html?id=${projectId}`;
+        })
+
+
+        //گرفتن اطلاعات پروژه
+        if (projectId) {
+            fetch(`http://localhost:8000/api/projects/${projectId}/`, {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ` + sessionStorage.getItem('access_token'),
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("پروژه پیدا نشد");
+                    return response.json();
+                })
+                .then(project => {
+                    console.log(project);
+                    document.getElementById("name").innerHTML = `
+                    پروژه : ${project.name}
+                    `
+                    document.getElementById("description").innerHTML = `
+                    ${project.description}
+                    `
+                    document.getElementById("owner").innerHTML = `
+                    سازنده پروژه :  ${project.owner.username}
+                    `
+                    project.members.forEach(element => {
+                        document.getElementById("members").innerHTML = `
+                    <div  class="bg-gray-700 px-4 py-2 rounded-full flex items-center">
+                        
+                        <span> ${element.username}</span>
+                    </div>
+                    `
+                    });
+
+                })
+                .catch(error => {
+                    console.log(error.message);
+                });
+        } else {
+            console.log("شناسه پروژه مشخص نیست");
+        }
+
+        //حذف پروژه
+        const del = document.querySelector(".delete");
+
+        del.addEventListener("click", async function () {
+
+            const confirmDelete = window.confirm("آیا مطمئن هستید که می‌خواهید این پروژه را حذف کنید؟");
+
+            if (!confirmDelete) {
+                console.log(" کاربر از حذف انصراف داد.");
+                return; // حذف لغو شد
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/projects/${projectId}/`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ` + sessionStorage.getItem('access_token'),
+                        "Content-Type": "application/json"
+                    }
+
+                })
+                if (response.status === 204) {
+                    console.log(" پروژه با موفقیت حذف شد");
+                    setTimeout(() => {
+                        window.location.href=`profile.html`;
+                    }, 1000);
+                    
+                } else if (response.status === 403) {
+                    throw new Error(" فقط مالک پروژه می‌تواند آن را حذف کند.");
+                } else if (response.status === 404) {
+                    throw new Error(" پروژه‌ای با این مشخصات پیدا نشد.");
+                } else {
+                    throw new Error("خطای ناشناخته‌ای رخ داده.");
+                }
+
+            } catch (error) {
+                console.error("خطا در حذف پروژه:", error.message);
+            }
+        }
+
+        )
+
+
+        const token = sessionStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = "login.html";
+        }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </body>

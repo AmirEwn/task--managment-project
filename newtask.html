@@ -5,9 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>creat new task</title>
+    <link rel="stylesheet" href="src/output.css">
 </head>
-<link rel="stylesheet" href="src/output.css">
-
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #374151 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+</style>
 <body class="size-full">
 
 
@@ -63,6 +72,7 @@
                     <div class="text-center mt-4">
                         <button type="submit" class="bg-blue-600 px-6 py-2 rounded hover:bg-blue-700 transition">ذخیره
                             تسک</button>
+                        <a href="profile.html" class="w-40 flex justify-end px-16"> برگشت</a>
                     </div>
                 </div>
             </form>
