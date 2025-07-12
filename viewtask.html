@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Task</title>
+</head>
+
+<body>
+    <!-- کارت نمایش تسک - Tailwind استایل کامل -->
+    <section id="task-details"
+        class="bg-gray-800 text-white w-full md:w-3/4 mx-auto mt-10 p-6 rounded-lg shadow-lg border border-gray-700 hidden">
+        <!-- عنوان تسک -->
+        <div class="mb-4">
+            <h2 class="text-2xl font-bold border-b pb-2 border-gray-600">جزئیات تسک</h2>
+        </div>
+
+        <!-- محتوا -->
+        <div class="space-y-4 text-sm md:text-base">
+            <div class="flex justify-between items-center">
+                <span class="text-gray-400">عنوان تسک:</span>
+                <span id="task-title" class="text-blue-400 font-semibold"></span>
+            </div>
+
+            <div class="flex justify-between items-start">
+                <span class="text-gray-400">توضیحات:</span>
+                <span id="task-desc"
+                    class="text-gray-200 text-right max-w-md text-sm md:text-base leading-relaxed"></span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-gray-400">وضعیت:</span>
+                <span id="task-status" class="px-3 py-1 rounded-full text-sm bg-yellow-500/20 text-yellow-400"></span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-gray-400">ددلاین:</span>
+                <span id="task-deadline" class="text-red-300"></span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <span class="text-gray-400">مسئول:</span>
+                <span id="task-assignee" class="text-green-300 font-medium"></span>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
+</html>

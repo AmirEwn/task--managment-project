@@ -313,6 +313,12 @@
             window.location.href = `addmember.html?id=${projectId}`;
         })
 
+        //اضافه کردن تسک
+        const newTask = document.querySelector(".newTask")
+        newTask.addEventListener("click",function(){
+            window.location.href = `newtask.html?id=${projectId}`;
+        })
+
         //گرفتن اطلاعات پروژه
         if (projectId) {
             fetch(`http://localhost:8000/api/projects/${projectId}/`, {
