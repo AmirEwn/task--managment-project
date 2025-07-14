@@ -1,50 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="size-full" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Task</title>
+
 </head>
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #374151 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+</style>
 
-<body>
-    <!-- کارت نمایش تسک - Tailwind استایل کامل -->
-    <section id="task-details"
-        class="bg-gray-800 text-white w-full md:w-3/4 mx-auto mt-10 p-6 rounded-lg shadow-lg border border-gray-700 hidden">
-        <!-- عنوان تسک -->
-        <div class="mb-4">
-            <h2 class="text-2xl font-bold border-b pb-2 border-gray-600">جزئیات تسک</h2>
-        </div>
+<body class="size-full">
+    <section class="bg-gray-900 text-white w-full h-full flex justify-center items-center">
+        <div class="bg-gray-800 size-3/4 rounded-lg border overflow-x-hidden p-8">
+            <!-- هدر تسک -->
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h1 id="title" class="text-3xl font-bold">تسک: سیستم مدیریت وظایف</h1>
+                    <p id="description" class="text-gray-300 mt-4">این پروژه برای مدیریت تسک‌های تیمی طراحی شده است</p>
 
-        <!-- محتوا -->
-        <div class="space-y-4 text-sm md:text-base">
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">عنوان تسک:</span>
-                <span id="task-title" class="text-blue-400 font-semibold"></span>
+                </div>
+                <div>
+
+                    <button
+                        class="delete bg-red-600 w-40 hover:bg-red-700 text-white px-4 py-2 mt-2 rounded-md flex items-center text-center justify-center">
+                        <a> حذف </a>
+                    </button>
+                    <a href="profile.html" class="w-40 flex justify-end mt-2 px-16 border rounded-md"> برگشت</a>
+                </div>
             </div>
 
-            <div class="flex justify-between items-start">
-                <span class="text-gray-400">توضیحات:</span>
-                <span id="task-desc"
-                    class="text-gray-200 text-right max-w-md text-sm md:text-base leading-relaxed"></span>
+            <div class="size-full h-44 grid grid-cols-2 p-8 ">
+
+                <div class="  ">
+                    <div class="my-5 text-white font-bold text-xl">
+                        assignee : <p id="owner"></p>
+                    </div>
+                    <div class="my-5 text-white font-bold text-xl">
+                        creted at : yyyy/mm/dd <p id="created_at"></p>
+                    </div>
+                </div>
+                <div class="  ">
+                    <div class="my-5 text-white font-bold text-xl">
+                        status <p id="status"></p>
+                    </div>
+                    <div class="my-5 text-white font-bold text-xl">
+                        deadline <p id="deadline"></p>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">وضعیت:</span>
-                <span id="task-status" class="px-3 py-1 rounded-full text-sm bg-yellow-500/20 text-yellow-400"></span>
-            </div>
-
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">ددلاین:</span>
-                <span id="task-deadline" class="text-red-300"></span>
-            </div>
-
-            <div class="flex justify-between items-center">
-                <span class="text-gray-400">مسئول:</span>
-                <span id="task-assignee" class="text-green-300 font-medium"></span>
-            </div>
         </div>
     </section>
+
+    <script>
+        // گرفتن project_id از URL
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+
+        const title = document.getElementById("title");
+        const description = document.getElementById("description");
+        const status = document.getElementById("status");
+        const deadline = document.getElementById("deadline");
+        const created_at = document.getElementById("created_at");
+        const owner = document.getElementById("owner");
+
+
+        function loadTask() {
+
+            fetch(`http://localhost:8000/api/tasks/${projectId}/`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ` + sessionStorage.getItem('access_token')
+                }
+            })
+                .then(response => {
+                    if (response.status === 403) throw new Error(" کاربر مجاز به دیدن تسک نیست ");
+                    if (response.status === 404) throw new Error("تسک پیدا نشد");
+                    return response.json();
+                })
+                .then(response => {
+                    console.log(response);
+                    title.innerHTML = `${response.title}`;
+                    description.innerHTML = `${response.description}`;
+                    deadline.innerHTML = `${response.deadline}`;
+                    created_at.innerHTML = `${response.created_at}`;
+                    status.innerHTML = `${response.status}`;
+                    owner.innerHTML = `${response.assignee_info.username}`;
+                })
+                .catch(error => {
+                    console.log("خطا در نشان دادن تسک ", error.message);
+                });
+        }
+
+        loadTask();
+
+
+        //حذف پروژه
+        const del = document.querySelector(".delete");
+
+        del.addEventListener("click", async function () {
+
+            const confirmDelete = window.confirm("آیا مطمئن هستید که می‌خواهید این تسک را حذف کنید؟");
+
+            if (!confirmDelete) {
+                console.log(" کاربر از حذف انصراف داد.");
+                return; // حذف لغو شد
+            }
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/tasks/${projectId}/`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ` + sessionStorage.getItem('access_token'),
+                        "Content-Type": "application/json"
+                    }
+
+                })
+                if (response.status === 204) {
+                    console.log(" تسک با موفقیت حذف شد");
+                    setTimeout(() => {
+                        window.location.href = `profile.html`;
+                    }, 1000);
+
+                } else if (response.status === 403) {
+                    throw new Error(" کاربر مجاز به حذف نیست .");
+                }
+                else {
+                    throw new Error("خطای ناشناخته‌ای رخ داده.");
+                }
+
+            } catch (error) {
+                console.error("خطا در حذف تسک:", error.message);
+            }
+        }
+
+        )
+
+        const token = sessionStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = "login.html";
+        }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </body>

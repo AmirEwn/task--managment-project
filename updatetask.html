@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" class="size-full" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Task</title>
+    <link rel="stylesheet" href="src/output.css">
+    <script>
+        const jalaali = {
+            toGregorian: function (jy, jm, jd) {
+                const a = Math.floor((jy - 979) * 365.25) + ((jm - 1) * 30.5) + jd;
+                const date = new Date(2000, 0, 1);
+                date.setDate(date.getDate() + a);
+                return {
+                    gy: date.getFullYear(),
+                    gm: date.getMonth() + 1,
+                    gd: date.getDate()
+                };
+            }
+        };
+    </script>
+
+    <!-- Persian Date Picker -->
+    <script src="https://unpkg.com/persian-datepicker-element/dist/persian-datepicker-element.min.js"></script>
+</head>
+<style>
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #374151 inset !important;
+        /* معادل bg-gray-700 */
+        -webkit-text-fill-color: white !important;
+        /* رنگ متن */
+        transition: background-color 5000s ease-in-out 0s;
+        /* جلوگیری از flash سفید */
+    }
+
+    .dark-theme {
+        --jdp-background: #364153;
+        --jdp-foreground: #000;
+        --jdp-border: #475569;
+        --jdp-primary: #4f46e5;
+        --jdp-primary-hover: #6366f1;
+        --jdp-primary-foreground: #ffffff;
+        --jdp-day-hover-bg: #000;
+        /* 🌟 مهم برای وضوح */
+    }
+</style>
+
+<body class="size-full">
+    <section class="bg-gray-900 text-white w-full h-full flex justify-center items-center">
+        <div class="bg-gray-800 size-3/4 rounded-lg border overflow-x-hidden p-8">
+            <!-- هدر تسک -->
+            <div class="flex justify-between items-start mb-8">
+                <div>
+                    <h1 id="titleView" class="text-3xl font-bold">تسک: سیستم مدیریت وظایف</h1>
+                    <input required id="title" type="text" placeholder="مثلاً: طراحی لوگو"
+                        class=" p-2 mt-3 font-normal text-base w-full rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <p id="descriptionView" class="text-gray-300 mt-4">این پروژه برای مدیریت تسک‌های تیمی طراحی شده است
+                    </p>
+                    <input required id="description" type="text" placeholder="توضیحات مربوط به تسک"
+                        class=" p-2 mt-3 font-normal text-base w-full rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+                <div class="  ">
+                    <div class="my-5 text-white font-bold text-xl">
+                        assignee : <p id="owner"></p>
+                        <input required id="user" type="text" placeholder="نام کاربری شخص مورد نظر "
+                            class=" p-2 mt-3 font-normal text-base w-full rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                </div>
+                <div>
+
+                    <button
+                        class="update bg-yellow-500 w-40 hover:bg-yellow-600 text-white px-4 py-2 mt-2 rounded-md flex items-center text-center justify-center">
+                        <a> ویرایش </a>
+                    </button>
+                    <a href="profile.html" class="w-40 flex justify-end mt-2 px-16 border rounded-md"> برگشت</a>
+                </div>
+            </div>
+
+            <div class="size-full h-44 grid grid-cols-2 p-8 ">
+
+                <div class="  ">
+
+                    <div class="my-5 text-white font-bold text-xl">
+                        deadline <p id="deadlineView"></p>
+                        <label class="block mb-1 "></label>
+                        <persian-datepicker-element id="deadline" class="dark-theme" format="YYYY/MM/DD"
+                            placeholder="تاریخ را انتخاب کنید" min-date="today" rtl></persian-datepicker-element>
+                        <div id="error" style="color: red; display: none; font-size: 0.9em;">لطفاً تاریخ را انتخاب کنید
+                        </div>
+                    </div>
+
+                </div>
+                <div class=" pr-6 ">
+                    <div class="my-5 text-white font-bold text-xl">
+                        status <p id="statusS"></p>
+                        <select id="status"
+                            class="font-normal text-base w-3/4  p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>انتخاب کنید</option>
+                            <option>در حال بررسی</option>
+                            <option>در حال انجام</option>
+                            <option>انجام شده</option>
+                        </select>
+                        <div id="errorStatus" style="color: red; display: none; font-size: 0.9em;">لطفاً تاریخ را انتخاب
+                            کنید
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <script>
+        // گرفتن project_id از URL
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+
+        const titleView = document.getElementById("titleView");
+        const descriptionView = document.getElementById("descriptionView");
+        const statusS = document.getElementById("statusS");
+        const deadlineView = document.getElementById("deadlineView");
+
+        const owner = document.getElementById("owner");
+        function loadTask() {
+
+            fetch(`http://localhost:8000/api/tasks/${projectId}/`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ` + sessionStorage.getItem('access_token')
+                }
+            })
+                .then(response => {
+                    if (response.status === 403) throw new Error(" کاربر مجاز به دیدن تسک نیست ");
+                    if (response.status === 404) throw new Error("تسک پیدا نشد");
+                    return response.json();
+                })
+                .then(response => {
+                    console.log(response);
+                    titleView.innerHTML = `${response.title}`;
+                    descriptionView.innerHTML = `${response.description}`;
+                    deadlineView.innerHTML = `${response.deadline}`;
+                    ;
+                    statusS.innerHTML = `${response.status}`;
+                    owner.innerHTML = `${response.assignee_info.username}`;
+                })
+                .catch(error => {
+                    console.log("خطا در نشان دادن تسک ", error.message);
+                });
+        }
+
+        loadTask();
+
+        document.querySelector(".update").addEventListener("click", function () {
+            const selectedValue = document.getElementById('status').value.trim();
+            console.log("وضعیت فارسی:", selectedValue);
+
+            if (selectedValue === "انتخاب کنید") {
+                errorStatus.style.display = "block"; // نمایش پیام خطا
+                return;
+            } else {
+                errorStatus.style.display = "none"; // مخفی‌سازی پیام خطا
+            }
+            // نگاشت مقادیر فارسی به انگلیسی
+            const statusMap = {
+                "در حال بررسی": "todo",
+                "در حال انجام": "doing",
+                "انجام شده": "done"
+            };
+
+            const Status = statusMap[selectedValue];
+
+            console.log("وضعیت انگلیسی:", Status);
+
+            const datepicker = document.getElementById("deadline");
+            const value = datepicker.getValue(); // [jy, jm, jd]
+            const error = document.getElementById("error");
+
+            if (!value) {
+                error.style.display = "block"; // نمایش پیام خطا
+                return;
+            } else {
+                error.style.display = "none"; // مخفی‌سازی پیام خطا
+            }
+
+            const [jy, jm, jd] = value;
+            const { gy, gm, gd } = jalaali.toGregorian(jy, jm, jd);
+            const deadline = `${gy}-${String(gm).padStart(2, '0')}-${String(gd).padStart(2, '0')}`;
+
+
+            console.log("تاریخ معتبر:", deadline);
+
+            const title = document.getElementById("title").value.trim();
+            const description = document.getElementById("description").value.trim();
+            const assignee = document.getElementById("user").value.trim();
+
+            console.log(title);
+            console.log(description);
+            console.log(assignee);
+
+            const payload = {
+                title,
+                description,
+                status: Status,
+                deadline,
+                project: projectId,
+                assignee,
+            };
+
+            console.log("Sending:", payload);
+
+            fetch(`http://localhost:8000/api/tasks/${projectId}/`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify(payload),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            console.error("متن خطا از سرور:", text);  // HTML خطا رو نشون می‌ده
+                            throw new Error(`HTTP ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    alert(" تسک با موفقیت آپدیت شد!");
+                    console.log(" Created:", data);
+                    // setTimeout(() => {
+                    //     window.location.href = `viewproject.html?id=${projectId}`;
+                    // }, 3000);
+                })
+                .catch((err) => {
+                    alert(" خطا در ویرایش تسک");
+                    console.error(err);
+                });
+        })
+
+        const token = sessionStorage.getItem('access_token');
+        if (!token) {
+            window.location.href = "login.html";
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</body>
+
+</html>
